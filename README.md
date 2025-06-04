@@ -1,5 +1,7 @@
 Project is not deployed yet
+
 To run:
+
 Type "npm run dev" and click on the localhost link given to you
 
 # React + TypeScript + Vite
