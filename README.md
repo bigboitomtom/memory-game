@@ -1,3 +1,7 @@
+Project is not deployed yet
+To run:
+Type "npm run dev" and click on the localhost link given to you
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
