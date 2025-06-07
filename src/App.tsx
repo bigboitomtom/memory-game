@@ -2,6 +2,9 @@ import { ButtonAdd } from "./components/ButtonAdd";
 import { ButtonHint } from "./components/ButtonHint";
 import { ButtonRemove } from "./components/ButtonRemove";
 import { ButtonClose } from "./components/ButtonClose";
+import { ButtonStartNorm } from "./components/ButtonStartNorm";
+import { ButtonStartHard } from "./components/ButtonStartHard";
+import { ButtonHome } from "./components/ButtonHome";
 import { Word } from "./components/Word";
 import { Score, Lives, Hints } from "./components/GameStat";
 import { GameReset } from "./components/GameReset";
@@ -25,12 +28,26 @@ const currGame: Game = {
 
 function App() {
   // States for rendering
+  const [home, setHome] = useState(true);
+  const [hardMode, setHardMode] = useState(false);
   const [score, setScore] = useState(currGame.score);
   const [lives, setLives] = useState(currGame.lives);
   const [hints, setHints] = useState(currGame.hints);
   const [viewHints, setViewHints] = useState(false);
   const [word, setWord] = useState(() => generate({ maxLength: 2 }) as string);
   const [activeGame, setActiveGame] = useState(true);
+
+  const handleClickStartNorm = () => {
+    setHome(false);
+  };
+
+  const handleClickStartHard = () => {
+    currGame.lives = 1;
+    setLives(currGame.lives);
+    setHome(false);
+    setHardMode(true);
+    return;
+  };
 
   // When add is pressed
   const handleClickAdd = () => {
@@ -104,12 +121,18 @@ function App() {
     setViewHints(false);
   };
 
+  const handleHome = () => {
+    setActiveGame(true);
+    setHome(true);
+  }
+
   if (!activeGame) {
     return (
       <div>
         <Score score={score} />
         <h1>Game Over!</h1>
         <GameReset onClick={handleGameReset} />
+        <ButtonHome onClick={handleHome} />
       </div>
     );
   }
@@ -129,17 +152,40 @@ function App() {
     );
   }
 
-  return (
-    <div>
-      <Word word={word} />
-      <Score score={score} />
-      <Lives lives={lives} />
-      <Hints hints={hints} />
-      <ButtonAdd onClick={handleClickAdd} />
-      <ButtonRemove onClick={handleClickRemove} />
-      <ButtonHint onClick={handleClickHint} />
-    </div>
-  );
+  // If at home screen
+  if (home) {
+    return (
+      <div>
+        <h1>Memory Game</h1>
+        <ButtonStartNorm onClick={handleClickStartNorm} />
+        <ButtonStartHard onClick={handleClickStartHard} />
+      </div>
+    );
+  } else if (hardMode) {
+    // if hardMode is selected
+    return (
+      <div>
+        <Word word={word} />
+        <Score score={score} />
+        <Lives lives={lives} />
+        <ButtonAdd onClick={handleClickAdd} />
+        <ButtonRemove onClick={handleClickRemove} />
+      </div>
+    );
+  } else {
+    // else the game has started
+    return (
+      <div>
+        <Word word={word} />
+        <Score score={score} />
+        <Lives lives={lives} />
+        <Hints hints={hints} />
+        <ButtonAdd onClick={handleClickAdd} />
+        <ButtonRemove onClick={handleClickRemove} />
+        <ButtonHint onClick={handleClickHint} />
+      </div>
+    );
+  }
 }
 
 export default App;
