@@ -46,7 +46,6 @@ function App() {
     setLives(currGame.lives);
     setHome(false);
     setHardMode(true);
-    return;
   };
 
   // When add is pressed
